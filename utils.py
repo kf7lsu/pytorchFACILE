@@ -2,18 +2,21 @@ import pickle
 import os
 import numpy as np
 
-DEFAULT_SPLIT = (0.9, 0.05, 0.05)
+import torch
+from torch.utils.data import TensorDataset
+
+from constants import *
 
 def _open_p2_data(path):
     """
-    Open pickled dataframes from Python2
+    Open pickled pandas dataframes from Python2
     """
     with open(path, "rb") as f:
         u = pickle._Unpickler(f)
         u.encoding = "latin1"
         return u.load()
 
-def load_data(data_path="data"):
+def load_np_data(data_path=DATA_FOLDER_PATH):
     """
     Load data from default paths
     """
@@ -24,9 +27,9 @@ def load_data(data_path="data"):
         print(f"Shape of {i}_total: {res[-1].shape}")
     return res
 
-def split_data(X, Y, split=DEFAULT_SPLIT, save_path=""):
+def split_np_data(X, Y, split=DEFAULT_SPLIT, save_path=""):
     """
-    Split X, Y using the split and save if save_path given.
+    Split X, Y np arrays using the split and save if save_path given.
     """
     print("Splitting data...")
     total = np.concatenate((X, Y), axis=1)
@@ -59,10 +62,10 @@ def split_data(X, Y, split=DEFAULT_SPLIT, save_path=""):
     print("Done splitting data")
     return X_train, X_val, X_test, Y_train, Y_val, Y_test
 
-def load_split_data(split=DEFAULT_SPLIT, data_path="data"):
+def load_split_np_data(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     """
-    Load X_train, X_val, X_test, Y_train, Y_val, Y_test if already saved,
-    split data again otherwise.
+    Load X_train, X_val, X_test, Y_train, Y_val, Y_test numpy arrays
+    if already saved, split data again otherwise.
     """
     res = []
     for a in ("X", "Y"):
@@ -76,3 +79,15 @@ def load_split_data(split=DEFAULT_SPLIT, data_path="data"):
 
     print("Using saved split data")
     return res
+
+def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
+    """
+    Load train_set, val_set, test_set as torch datasets from saved np data.
+    """
+    X_train, X_val, X_test, Y_train, Y_val, Y_test = map(torch.from_numpy, load_split_np_data(split=split, data_path=data_path))
+
+    train_set = TensorDataset(X_train, Y_train)
+    val_set = TensorDataset(X_val, Y_val)
+    test_set = TensorDataset(X_test, Y_test)
+
+    return train_set, val_set, test_set

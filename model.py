@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class FACILENet(nn.module):
+class FACILENet(nn.Module):
     def __init__(self, n_features):
         super(FACILENet, self).__init__()
         self.bn1 = nn.BatchNorm1d(n_features, momentum=0.6)

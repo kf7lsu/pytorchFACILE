@@ -1,0 +1,5 @@
+name: pytorchFACILE-env
+
+dependencies:
+  - python
+  - pytorch
