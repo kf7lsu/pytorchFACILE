@@ -70,19 +70,23 @@ def load_split_np_data(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     res = []
     for a in ("X", "Y"):
         for b in ("train", "val", "test"):
-            path = os.path.join(data_path, f"{a}_{b}.npy")
+            name = f"{a}_{b}"
+            path = os.path.join(data_path, f"{name}.npy")
             if not os.path.exists(path):
                 print(f"Missing {path} file, recalculating split")
                 X, Y = load_data(data_path=data_path)
                 return split_data(X, Y, split=split, save_path=data_path)
-            res.append(np.load(path))
+            arr = np.load(path)
+            print(f"{name} shape: {arr.shape}")
+            res.append(arr)
 
     print("Using saved split data")
     return res
 
 def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     """
-    Load train_set, val_set, test_set as torch datasets from saved np data.
+    Load train_set, val_set, test_set as torch datasets from saved np data
+    and number of feautres.
     """
     X_train, X_val, X_test, Y_train, Y_val, Y_test = map(torch.from_numpy, load_split_np_data(split=split, data_path=data_path))
 
@@ -90,4 +94,4 @@ def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     val_set = TensorDataset(X_val, Y_val)
     test_set = TensorDataset(X_test, Y_test)
 
-    return train_set, val_set, test_set
+    return train_set, val_set, test_set, X_train.shape[1]
