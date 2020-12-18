@@ -1,6 +1,7 @@
 import pickle
 import os
 import numpy as np
+import pandas as pd
 
 import torch
 from torch.utils.data import TensorDataset
@@ -23,7 +24,14 @@ def load_np_data(data_path=DATA_FOLDER_PATH):
     res = []
     for i in ("X", "Y"):
         path = os.path.join(data_path, f"{i}_allData.pkl")
-        res.append(_open_p2_data(path).to_numpy())
+        if i == "X":
+            res.append(_open_p2_data(path).to_numpy())
+
+        if i == "Y":
+            arr = _open_p2_data(path)["genE"].to_numpy()
+            arr = np.reshape(arr, (arr.shape[0], 1))
+            res.append(arr)
+
         print(f"Shape of {i}_total: {res[-1].shape}")
     return res
 
@@ -74,8 +82,8 @@ def load_split_np_data(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
             path = os.path.join(data_path, f"{name}.npy")
             if not os.path.exists(path):
                 print(f"Missing {path} file, recalculating split")
-                X, Y = load_data(data_path=data_path)
-                return split_data(X, Y, split=split, save_path=data_path)
+                X, Y = load_np_data(data_path=data_path)
+                return split_np_data(X, Y, split=split, save_path=data_path)
             arr = np.load(path)
             print(f"{name} shape: {arr.shape}")
             res.append(arr)
@@ -86,7 +94,7 @@ def load_split_np_data(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
 def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     """
     Load train_set, val_set, test_set as torch datasets from saved np data
-    and number of feautres.
+    and return number of features.
     """
     X_train, X_val, X_test, Y_train, Y_val, Y_test = map(torch.from_numpy, load_split_np_data(split=split, data_path=data_path))
 
@@ -95,3 +103,16 @@ def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
     test_set = TensorDataset(X_test, Y_test)
 
     return train_set, val_set, test_set, X_train.shape[1]
+
+def save_num(n, filepath):
+    """ Save number to file """
+    with open(filepath, "w+") as f:
+        f.write(str(n))
+
+def load_num(filepath):
+    """ Read number from file, returning -1 if not found """
+    if not os.path.isfile(filepath):
+        return -1
+
+    with open(filepath, "r") as f:
+        return float(f.read())
