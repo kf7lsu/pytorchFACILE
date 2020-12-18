@@ -8,7 +8,8 @@ import numpy as np
 import pickle
 
 import utils
-from model import FACILENet as Net
+from model import BaseNet
+from quant_model import QuantNet
 from constants import *
 
 def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
@@ -91,7 +92,8 @@ def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 def main():
     # Hide stack trace when keyboard interrupt
     try:
-        train(Net)
+        train(BaseNet)
+        # train (QuantNet, models_folder="quant_models")
     except KeyboardInterrupt:
         print("Interrupted")
 

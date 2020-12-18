@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class BaseNet(nn.Module):
+class QuantNet(nn.Module):
     def __init__(self, n_features):
-        super(BaseNet, self).__init__()
+        super(QuantNet, self).__init__()
         self.bn1 = nn.BatchNorm1d(n_features, momentum=0.6)
         self.fc1 = nn.Linear(n_features, 12)
         self.drop1 = nn.Dropout(0.6)
