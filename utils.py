@@ -8,7 +8,7 @@ from torch.utils.data import TensorDataset
 
 from constants import *
 
-def _open_p2_data(path):
+def open_p2_df(path):
     """
     Open pickled pandas dataframes from Python2
     """
@@ -25,10 +25,10 @@ def load_np_data(data_path=DATA_FOLDER_PATH):
     for i in ("X", "Y"):
         path = os.path.join(data_path, f"{i}_allData.pkl")
         if i == "X":
-            res.append(_open_p2_data(path).to_numpy())
+            res.append(open_p2_df(path).to_numpy())
 
         if i == "Y":
-            arr = _open_p2_data(path)["genE"].to_numpy()
+            arr = open_p2_df(path)["genE"].to_numpy()
             arr = np.reshape(arr, (arr.shape[0], 1))
             res.append(arr)
 
