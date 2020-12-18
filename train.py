@@ -11,7 +11,8 @@ import utils
 from model import FACILENet as Net
 from constants import *
 
-def train(batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, models_folder_path=MODELS_FOLDER_PATH):
+def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
+        models_folder_path=MODELS_FOLDER_PATH):
     train_set, val_set, test_set, n_features = utils.load_torch_datasets()
 
     gen_params = {
@@ -23,7 +24,7 @@ def train(batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, models_folder_path=MODELS_FO
     val_gen = DataLoader(val_set, **gen_params)
     print(f"Number of batches per epoch: {len(train_gen)}")
 
-    model = Net(n_features=n_features).float()
+    model = model_class(n_features=n_features).float()
     loss_fn = torch.nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
@@ -90,7 +91,7 @@ def train(batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, models_folder_path=MODELS_FO
 def main():
     # Hide stack trace when keyboard interrupt
     try:
-        train()
+        train(Net)
     except KeyboardInterrupt:
         print("Interrupted")
 
