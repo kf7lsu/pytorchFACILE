@@ -8,11 +8,12 @@ import numpy as np
 import pickle
 
 import utils
+from metrics import Metrics
 from model import BaseNet
 from quant_model import QuantNet
 from constants import *
 
-def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
+def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
         models_folder_path=MODELS_FOLDER_PATH):
     train_set, val_set, test_set, n_features = utils.load_torch_datasets()
 
@@ -35,6 +36,7 @@ def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
     print(f"# of features: {n_features}")
 
     min_ave_val_loss = utils.load_num(BEST_LOSS_PATH)
+
     print(f"\n{'='*30}\n")
     for epoch in range(n_epochs):
         print(f"Epoch {epoch + 1}")
@@ -66,6 +68,10 @@ def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
         ave_train_loss = total_train_loss / n_train_samples
         ave_val_loss = total_val_loss / n_val_samples
 
+        if (metrics):
+            metrics.train_losses.append(ave_train_loss)
+            metrics.val_losses.append(ave_val_loss)
+
         print(f"Ave Train Loss: {ave_train_loss}")
         print(f"Ave Val Loss: {ave_val_loss}")
 
@@ -91,11 +97,14 @@ def train(model_class, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 
 def main():
     # Hide stack trace when keyboard interrupt
+    metrics = Metrics()
     try:
-        train(BaseNet)
-        # train (QuantNet, models_folder="quant_models")
+        train(BaseNet, metrics=metrics)
+        # train(QuantNet, metrics=metrics, models_folder="quant_models")
     except KeyboardInterrupt:
         print("Interrupted")
+    finally:
+        metrics.plot_losses()
 
 if __name__ == "__main__":
     main()
