@@ -8,9 +8,9 @@ class BaseNet(nn.Module):
     def __init__(self, n_features):
         super(BaseNet, self).__init__()
         self.bn1 = nn.BatchNorm1d(n_features, momentum=0.6)
-        self.fc1 = nn.Linear(n_features, 36)
-        self.bn2 = nn.BatchNorm1d(36, momentum=0.6)
-        self.fc2 = nn.Linear(36, 11)
+        self.fc1 = nn.Linear(n_features, 31)
+        self.bn2 = nn.BatchNorm1d(31, momentum=0.6)
+        self.fc2 = nn.Linear(31, 11)
         self.bn3 = nn.BatchNorm1d(11, momentum=0.6)
         self.fc3 = nn.Linear(11, 3)
         self.fc4 = nn.Linear(3, 1)
@@ -23,3 +23,6 @@ class BaseNet(nn.Module):
         x = self.bn3(x)
         x = F.relu(self.fc3(x))
         return self.fc4(x)
+
+if __name__=="__main__":
+    print(BaseNet(14))
