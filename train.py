@@ -14,7 +14,7 @@ from quant_model import QuantNet
 from constants import *
 
 def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
-        models_folder_path=MODELS_FOLDER_PATH):
+        models_folder_path=MODELS_FOLDER_PATH, quantized=False):
     train_set, val_set, test_set, n_features = utils.load_torch_datasets()
 
     gen_params = {
@@ -36,7 +36,8 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
     print(f"# of features: {n_features}")
 
     min_ave_val_loss = utils.load_num(BEST_LOSS_PATH)
-
+    best_model = None
+    
     print(f"\n{'='*30}\n")
     for epoch in range(n_epochs):
         print(f"Epoch {epoch + 1}")
@@ -81,8 +82,10 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
             # Save best models
             name = datetime.datetime.now().strftime("%b-%d-%I%M%p-%G-%f")
             filepath = os.path.join(models_folder_path, f"{name}.pkl")
-            with open(filepath, "wb+") as f:
-                pickle.dump(model, f)
+            best_model = model
+            if not quantized:  #brevitas doesn't like pickle
+                with open(filepath, "wb+") as f:
+                    pickle.dump(model, f)
 
             # Save ave loss as well for future runs
             utils.save_num(ave_val_loss, BEST_LOSS_PATH)
@@ -94,6 +97,8 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
             print("Saved model")
 
         print(f"\n{'='*30}\n")
+    if quantized:  #just spit out the best model, can finn export later
+        return best_model
 
 def main():
     # Hide stack trace when keyboard interrupt
