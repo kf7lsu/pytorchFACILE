@@ -13,9 +13,15 @@ from model import BaseNet
 from quant_model import QuantNet
 from constants import *
 
+from processing_for_train import FACILE_preproc as preproc
+from processing_for_train import FACILE_postproc as postproc
+
 def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
         models_folder_path=MODELS_FOLDER_PATH, quantized=False):
-    train_set, val_set, test_set, n_features = utils.load_torch_datasets()
+    if quantized:
+        train_set, val_set, test_set, n_features = utils.load_torch_datasets_quant()
+    else:
+        train_set, val_set, test_set, n_features = utils.load_torch_datasets()
 
     gen_params = {
                 "batch_size": batch_size,
@@ -50,6 +56,11 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
         for train_batch, labels_batch in train_gen:
             n_train_samples += train_batch.shape[0]
 
+            #if quantized:
+            #    output_batch = preproc(train_batch.float())
+            #    output_batch = model(output_batch)
+            #    output_batch = postproc(output_batch).float()
+            #else:
             output_batch = model(train_batch.float())
             loss = loss_fn(output_batch.float(), labels_batch.float())
             total_train_loss += loss.item()
@@ -62,6 +73,12 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
         for val_batch, labels_batch in val_gen:
             n_val_samples = val_batch.shape[0]
 
+            #output_batch = model(val_batch.float())
+            #if quantized:
+            #    output_batch = preproc(val_batch.float())
+            #    output_batch = model(output_batch)
+            #    output_batch = postproc(output_batch).float()
+            #else:
             output_batch = model(val_batch.float())
             total_val_loss += loss_fn(output_batch.float(), 
                     labels_batch.float()).item()

@@ -8,7 +8,8 @@ class QuantNet_opt(nn.Module):
     def __init__(self, n_features):
         super(QuantNet_opt, self).__init__()
         self.bn0 = nn.BatchNorm1d(n_features, momentum=0.6)
-        self.relu0 = QuantReLU(bit_width=ACT_BW)
+        #self.relu0 = QuantReLU(bit_width=ACT_BW)
+        self.qinp = QuantIdentity(bit_width=ACT_BW)
         self.fc1 = QuantLinear(n_features, 31, bias=True, weight_bit_width=WEIGHT_BW)
         self.bn1 = nn.BatchNorm1d(31, momentum=0.6)
         self.relu1 = QuantReLU(bit_width=ACT_BW)
@@ -20,11 +21,12 @@ class QuantNet_opt(nn.Module):
         self.relu3 = QuantReLU(bit_width=ACT_BW)
         self.fc4 = QuantLinear(3, 1, bias=True, weight_bit_width=WEIGHT_BW)
         self.bn4 = nn.BatchNorm1d(1, momentum=0.6)
-        self.relu4 = QuantReLU(bit_width=ACT_BW)
+        self.relu4 = QuantReLU(bit_width=32)
 
     def forward(self, x):
         x = self.bn0(x)
-        x = self.relu0(x)
+        #x = self.relu0(x)
+        x = self.qinp(x)
         x = self.fc1(x)
         x = self.bn1(x)
         #x = F.relu(self.fc1(x))
