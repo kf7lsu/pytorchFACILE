@@ -21,7 +21,7 @@ class QuantNet_opt(nn.Module):
         self.relu3 = QuantReLU(bit_width=ACT_BW)
         self.fc4 = QuantLinear(3, 1, bias=True, weight_bit_width=WEIGHT_BW)
         self.bn4 = nn.BatchNorm1d(1, momentum=0.6)
-        self.relu4 = QuantReLU(bit_width=32)
+        self.relu4 = QuantReLU(bit_width=ACT_BW)
 
     def forward(self, x):
         x = self.bn0(x)

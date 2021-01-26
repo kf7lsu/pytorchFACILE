@@ -5,7 +5,7 @@ import pandas as pd
 
 import torch
 from torch.utils.data import TensorDataset
-from processing_for_train import FACILE_preproc, FACILE_preproc_out
+#from processing_for_train import FACILE_preproc, FACILE_preproc_out
 
 from constants import *
 
@@ -105,26 +105,26 @@ def load_torch_datasets(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
 
     return train_set, val_set, test_set, X_train.shape[1]
 
-def load_torch_datasets_quant(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
-    """
-    Load train_set, val_set, test_set as torch datasets from saved np data
-    and return number of features.
-    """
-    X_train, X_val, X_test, Y_train, Y_val, Y_test = map(torch.from_numpy, load_split_np_data(split=split, data_path=data_path))
+#def load_torch_datasets_quant(split=DEFAULT_SPLIT, data_path=DATA_FOLDER_PATH):
+#    """
+#    Load train_set, val_set, test_set as torch datasets from saved np data
+#    and return number of features.
+#    """
+#    X_train, X_val, X_test, Y_train, Y_val, Y_test = map(torch.from_numpy, load_split_np_data(split=split, data_path=data_path))
 
     #preprocess the training data so that all values range between 0 and 1
-    X_train = FACILE_preproc(X_train)
-    X_test = FACILE_preproc(X_test)
-    X_val = FACILE_preproc(X_val)
-    Y_train = FACILE_preproc_out(Y_train)
-    Y_test = FACILE_preproc_out(Y_test)
-    Y_val = FACILE_preproc_out(Y_val)
+#    X_train = FACILE_preproc(X_train)
+#    X_test = FACILE_preproc(X_test)
+#    X_val = FACILE_preproc(X_val)
+#    Y_train = FACILE_preproc_out(Y_train)
+#    Y_test = FACILE_preproc_out(Y_test)
+#    Y_val = FACILE_preproc_out(Y_val)
     
-    train_set = TensorDataset(X_train, Y_train)
-    val_set = TensorDataset(X_val, Y_val)
-    test_set = TensorDataset(X_test, Y_test)
+#    train_set = TensorDataset(X_train, Y_train)
+#    val_set = TensorDataset(X_val, Y_val)
+#    test_set = TensorDataset(X_test, Y_test)
 
-    return train_set, val_set, test_set, X_train.shape[1]
+#    return train_set, val_set, test_set, X_train.shape[1]
 
 def save_num(n, filepath):
     """ Save number to file """

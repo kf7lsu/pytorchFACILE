@@ -4,15 +4,15 @@ import torch
 DEFAULT_SPLIT = (0.6, 0.3, 0.1)
 
 BATCH_SIZE = 500
-N_EPOCHS = 10
+N_EPOCHS = 100
 LEARNING_RATE = 0.01
 
 DATA_FOLDER_PATH = "data"
 MODELS_FOLDER_PATH = "models"
 BEST_LOSS_PATH = os.path.join(MODELS_FOLDER_PATH, "min_ave_val_loss_quant.txt")
 
-WEIGHT_BW = 32
-ACT_BW = 32
+WEIGHT_BW = 4
+ACT_BW = 4
 
 PREPROC_MINS = torch.tensor([
                             31.0,
@@ -29,7 +29,7 @@ PREPROC_MINS = torch.tensor([
                             36.765,
                             36.762,
                             36.761
-                            ], dtype=torch.float64)
+                            ], dtype=torch.float32)
 PREPROC_MAXES = torch.tensor([
                             113.0,
                             7.0,
@@ -45,9 +45,9 @@ PREPROC_MAXES = torch.tensor([
                             78382.790,
                             39076.9961,
                             30473.15821
-                            ], dtype=torch.float64)
-POSTPROC_MIN = torch.tensor([0.0], dtype=torch.float64)
-POSTPROC_MAX = torch.tensor([507.4008], dtype=torch.float64)
+                            ], dtype=torch.float32)
+POSTPROC_MIN = torch.tensor([0.0], dtype=torch.float32)
+POSTPROC_MAX = torch.tensor([507.4008], dtype=torch.float32)
 PREPROC_INCRS_4b = torch.tensor([
                                 5.4667,
                                 0.40,
