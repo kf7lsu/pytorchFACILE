@@ -1,0 +1,45 @@
+{
+  "Defaults": {},
+  "StreamingFIFO_0": {
+    "ram_style": "auto",
+    "depth": 32,
+    "impl_style": "rtl"
+  },
+  "StreamingFCLayer_Batch_0": {
+    "PE": 1,
+    "SIMD": 1,
+    "ram_style": "auto",
+    "resType": "lut",
+    "mem_mode": "decoupled",
+    "runtime_writeable_weights": 0
+  },
+  "StreamingFIFO_1": {
+    "ram_style": "auto",
+    "depth": 32,
+    "impl_style": "rtl"
+  },
+  "StreamingFCLayer_Batch_1": {
+    "PE": 1,
+    "SIMD": 1,
+    "ram_style": "auto",
+    "resType": "lut",
+    "mem_mode": "decoupled",
+    "runtime_writeable_weights": 0
+  },
+  "StreamingFCLayer_Batch_2": {
+    "PE": 1,
+    "SIMD": 1,
+    "ram_style": "auto",
+    "resType": "lut",
+    "mem_mode": "decoupled",
+    "runtime_writeable_weights": 0
+  },
+  "StreamingFCLayer_Batch_3": {
+    "PE": 1,
+    "SIMD": 1,
+    "ram_style": "auto",
+    "resType": "lut",
+    "mem_mode": "decoupled",
+    "runtime_writeable_weights": 0
+  }
+}
