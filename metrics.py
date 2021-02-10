@@ -4,6 +4,8 @@ class Metrics:
     def __init__(self):
         self.train_losses = []
         self.val_losses = []
+        self.train_losses_quant = []
+        self.val_losses_quant = []
 
     def plot_losses(self):
         ax = plt.gca()
@@ -11,6 +13,8 @@ class Metrics:
         ax.set_xlabel("Epochs")
         plt.plot(self.train_losses, label='train loss')
         plt.plot(self.val_losses, label='validation loss')
+        plt.plot(self.train_losses_quant, label='quant train loss')
+        plt.plot(self.val_losses_quant, label='quant validation loss')
         plt.legend()
         plt.show()
 

@@ -44,4 +44,5 @@ class QuantNet_opt(nn.Module):
         x = self.bn4(x)
         #x = F.relu(self.fc4(x))
         x = self.relu4(x)
+        #x = torch.round(x)
         return x

@@ -10,7 +10,6 @@ def FACILE_preproc(x):
     x = x - torch.tensor(PREPROC_MINS, dtype=float32)
     x = x / torch.tensor(pre_incrs, dtype=float32)
     x = torch.round(x)
-    x = x.type(int8)
     x = x.type(float32)
     return x
 
@@ -18,6 +17,12 @@ def FACILE_postproc(x):
     x = x.type(float32)
     x = x * torch.tensor(post_incr, dtype=float32)
     x = x + torch.tensor(POSTPROC_MIN, dtype=float32)
+    return x
+
+def FACILE_preproc_out(x):
+    x = x - torch.tensor(POSTPROC_MIN, dtype=float32)
+    x = x / torch.tensor(post_incr, dtype=float32)
+    x = torch.round(x)
     return x
 
 #NEW VERSION

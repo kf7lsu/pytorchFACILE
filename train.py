@@ -15,6 +15,7 @@ from constants import *
 
 from processing_for_train import FACILE_preproc as preproc
 from processing_for_train import FACILE_postproc as postproc
+from processing_for_train import FACILE_preproc_out as preproc_out
 
 def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS, 
         models_folder_path=MODELS_FOLDER_PATH, quantized=False):
@@ -50,6 +51,8 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 
         total_train_loss = 0
         total_val_loss = 0
+        total_train_loss_quant = 0
+        total_val_loss_quant = 0
         n_train_samples = 0
         n_val_samples = 0
 
@@ -57,9 +60,15 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
             n_train_samples += train_batch.shape[0]
 
             if quantized:
+                labels_batch_q = labels_batch
+                labels_batch = preproc_out(labels_batch.float())
                 output_batch = preproc(train_batch.float())
                 output_batch = model(output_batch)
-                output_batch = postproc(output_batch).float()
+                #output_batch = postproc(output_batch).float()
+                output_batch_quant = torch.round(output_batch)
+                output_batch_quant = postproc(output_batch_quant)
+                q_loss = loss_fn(output_batch_quant.float(), labels_batch_q.float())
+                total_train_loss_quant += q_loss.item()
             else:
                 output_batch = model(train_batch.float())
             loss = loss_fn(output_batch.float(), labels_batch.float())
@@ -75,9 +84,15 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 
             #output_batch = model(val_batch.float())
             if quantized:
+                labels_batch_q = labels_batch
+                labels_batch = preproc_out(labels_batch.float())
                 output_batch = preproc(val_batch.float())
                 output_batch = model(output_batch)
-                output_batch = postproc(output_batch).float()
+                #output_batch = postproc(output_batch).float()
+                output_batch_quant = torch.round(output_batch)
+                output_batch_quant = postproc(output_batch_quant)
+                q_loss = loss_fn(output_batch_quant.float(), labels_batch_q.float())
+                total_val_loss_quant += q_loss.item()
             else:
                 output_batch = model(val_batch.float())
             total_val_loss += loss_fn(output_batch.float(), 
@@ -85,13 +100,19 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 
         ave_train_loss = total_train_loss / n_train_samples
         ave_val_loss = total_val_loss / n_val_samples
+        ave_train_loss_q = total_train_loss_quant / n_train_samples
+        ave_val_loss_q = total_val_loss_quant / n_val_samples
 
         if (metrics):
             metrics.train_losses.append(ave_train_loss)
             metrics.val_losses.append(ave_val_loss)
+            metrics.train_losses_quant.append(ave_train_loss_q)
+            metrics.val_losses_quant.append(ave_val_loss_q)
 
         print(f"Ave Train Loss: {ave_train_loss}")
         print(f"Ave Val Loss: {ave_val_loss}")
+        print(f"Ave Q Train Loss: {ave_train_loss_q}")
+        print(f"Ave Q Val Loss: {ave_val_loss_q}")
 
         saved_model = False
         if ave_val_loss < min_ave_val_loss or min_ave_val_loss == -1:
