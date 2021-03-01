@@ -65,7 +65,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
                 output_batch = preproc(train_batch.float())
                 output_batch = model(output_batch)
                 #output_batch = postproc(output_batch).float()
-                output_batch_quant = torch.round(output_batch)
+                output_batch_quant = torch.trunc(output_batch)
                 output_batch_quant = postproc(output_batch_quant)
                 q_loss = loss_fn(output_batch_quant.float(), labels_batch_q.float())
                 total_train_loss_quant += q_loss.item()
