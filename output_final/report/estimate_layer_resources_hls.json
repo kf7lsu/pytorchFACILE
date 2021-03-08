@@ -1,15 +1,15 @@
 {
   "StreamingFCLayer_Batch_0": {
     "BRAM_18K": "0",
-    "FF": "364",
-    "LUT": "1026",
+    "FF": "374",
+    "LUT": "1034",
     "DSP48E": "0",
     "URAM": "0"
   },
   "StreamingFCLayer_Batch_1": {
     "BRAM_18K": "0",
-    "FF": "470",
-    "LUT": "1080",
+    "FF": "441",
+    "LUT": "1069",
     "DSP48E": "0",
     "URAM": "0"
   },
@@ -24,6 +24,13 @@
     "BRAM_18K": "0",
     "FF": "168",
     "LUT": "873",
+    "DSP48E": "0",
+    "URAM": "0"
+  },
+  "Thresholding_Batch_0": {
+    "BRAM_18K": "0",
+    "FF": "44",
+    "LUT": "237",
     "DSP48E": "0",
     "URAM": "0"
   }

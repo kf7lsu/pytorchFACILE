@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from brevitas.nn import QuantLinear, QuantReLU, QuantIdentity
+from brevitas.core.quant import QuantType
 from constants import WEIGHT_BW, ACT_BW
 
 class QuantNet_opt(nn.Module):
@@ -9,7 +10,7 @@ class QuantNet_opt(nn.Module):
         super(QuantNet_opt, self).__init__()
         self.bn0 = nn.BatchNorm1d(n_features, momentum=0.6)
         #self.relu0 = QuantReLU(bit_width=ACT_BW)
-        self.qinp = QuantIdentity(bit_width=ACT_BW)
+        self.qinp = QuantIdentity(quant_type=QuantType.INT, bit_width=ACT_BW)
         self.fc1 = QuantLinear(n_features, 31, bias=True, weight_bit_width=WEIGHT_BW)
         self.bn1 = nn.BatchNorm1d(31, momentum=0.6)
         self.relu1 = QuantReLU(bit_width=ACT_BW)
@@ -22,6 +23,7 @@ class QuantNet_opt(nn.Module):
         self.fc4 = QuantLinear(3, 1, bias=True, weight_bit_width=WEIGHT_BW)
         self.bn4 = nn.BatchNorm1d(1, momentum=0.6)
         self.relu4 = QuantReLU(bit_width=ACT_BW)
+        self.qout = QuantIdentity(quant_type=QuantType.INT, bit_width=ACT_BW, min_val=0.0, max_val=15.0)
 
     def forward(self, x):
         x = self.bn0(x)
@@ -44,5 +46,6 @@ class QuantNet_opt(nn.Module):
         x = self.bn4(x)
         #x = F.relu(self.fc4(x))
         x = self.relu4(x)
+        x = self.qout(x)
         #x = torch.round(x)
         return x

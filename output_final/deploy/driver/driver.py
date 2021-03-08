@@ -37,7 +37,7 @@ from driver_base import FINNExampleOverlay
 io_shape_dict = {
     # FINN DataType for input and output tensors
     "idt" : DataType.INT4,
-    "odt" : DataType.UINT4,
+    "odt" : DataType.INT4,
     # shapes for input and output tensors (NHWC layout)
     "ishape_normal" : (1, 14),
     "oshape_normal" : (1, 1),
