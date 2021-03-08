@@ -7,7 +7,7 @@ def preproc(x):
     x = x - np.asarray(PREPROC_MINS)
     x = x / np.asarray(pre_incrs)
     x = x.round()
-    #x = x.astype("int8")
+    x = x.astype("int8")
     return x
 
 def postproc(x):
