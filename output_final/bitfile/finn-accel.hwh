@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Mon Mar  8 20:17:49 2021" VIVADOVERSION="2019.1.3">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Tue Mar  9 19:25:09 2021" VIVADOVERSION="2019.1.3">
 
   <SYSTEMINFO ARCH="zynquplus" BOARD="em.avnet.com:ultra96v1:part0:1.2" DEVICE="xczu3eg" NAME="top" PACKAGE="sbva484" SPEEDGRADE="-1"/>
 

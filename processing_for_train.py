@@ -22,7 +22,7 @@ def FACILE_postproc(x):
 def FACILE_preproc_out(x):
     x = x - torch.tensor(POSTPROC_MIN, dtype=float32)
     x = x / torch.tensor(post_incr, dtype=float32)
-    x = torch.trunc(x)
+    x = torch.round(x)
     return x
 
 #NEW VERSION
