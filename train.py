@@ -45,6 +45,10 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
     min_ave_val_loss = utils.load_num(BEST_LOSS_PATH)
     best_model = None
     
+    if quantized:
+        #ensure brevitas model is in training mode
+        model.train()
+    
     print(f"\n{'='*30}\n")
     for epoch in range(n_epochs):
         print(f"Epoch {epoch + 1}")
@@ -65,7 +69,8 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
                 output_batch = preproc(train_batch.float())
                 output_batch = model(output_batch)
                 #output_batch = postproc(output_batch).float()
-                output_batch_quant = torch.trunc(output_batch)
+                #output_batch = torch.trunc(output_batch)
+                output_batch_quant = torch.round(output_batch)
                 output_batch_quant = postproc(output_batch_quant)
                 q_loss = loss_fn(output_batch_quant.float(), labels_batch_q.float())
                 total_train_loss_quant += q_loss.item()
@@ -80,7 +85,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
             optimizer.step() # update weights using computed gradients
 
         for val_batch, labels_batch in val_gen:
-            n_val_samples = val_batch.shape[0]
+            n_val_samples += val_batch.shape[0]
 
             #output_batch = model(val_batch.float())
             if quantized:
@@ -89,6 +94,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
                 output_batch = preproc(val_batch.float())
                 output_batch = model(output_batch)
                 #output_batch = postproc(output_batch).float()
+                #output_batch = torch.trunc(output_batch)
                 output_batch_quant = torch.round(output_batch)
                 output_batch_quant = postproc(output_batch_quant)
                 q_loss = loss_fn(output_batch_quant.float(), labels_batch_q.float())
@@ -121,6 +127,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
             name = datetime.datetime.now().strftime("%b-%d-%I%M%p-%G-%f")
             filepath = os.path.join(models_folder_path, f"{name}.pkl")
             best_model = model
+            print(type(best_model))
             if not quantized:  #brevitas doesn't like pickle
                 with open(filepath, "wb+") as f:
                     pickle.dump(model, f)
@@ -136,6 +143,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
 
         print(f"\n{'='*30}\n")
     if quantized:  #just spit out the best model, can finn export later
+        print(type(best_model))
         return best_model
 
 def main():
