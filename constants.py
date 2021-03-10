@@ -10,8 +10,8 @@ DATA_FOLDER_PATH = "data"
 MODELS_FOLDER_PATH = "models"
 BEST_LOSS_PATH = os.path.join(MODELS_FOLDER_PATH, "min_ave_val_loss_quant.txt")
 
-WEIGHT_BW = 4
-ACT_BW = 4
+WEIGHT_BW = 6
+ACT_BW = 6
 
 PREPROC_MINS =[
                 31.0,

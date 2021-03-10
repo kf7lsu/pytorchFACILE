@@ -1,36 +1,36 @@
 {
   "StreamingFCLayer_Batch_0": {
     "BRAM_18K": "0",
-    "FF": "376",
-    "LUT": "1031",
+    "FF": "1099",
+    "LUT": "2672",
     "DSP48E": "0",
     "URAM": "0"
   },
   "StreamingFCLayer_Batch_1": {
     "BRAM_18K": "0",
-    "FF": "440",
-    "LUT": "1069",
+    "FF": "1148",
+    "LUT": "2957",
     "DSP48E": "0",
     "URAM": "0"
   },
   "StreamingFCLayer_Batch_2": {
     "BRAM_18K": "0",
-    "FF": "208",
-    "LUT": "1124",
+    "FF": "238",
+    "LUT": "3132",
     "DSP48E": "0",
     "URAM": "0"
   },
   "StreamingFCLayer_Batch_3": {
     "BRAM_18K": "0",
-    "FF": "167",
-    "LUT": "848",
+    "FF": "181",
+    "LUT": "2038",
     "DSP48E": "0",
     "URAM": "0"
   },
   "Thresholding_Batch_0": {
     "BRAM_18K": "0",
     "FF": "44",
-    "LUT": "237",
+    "LUT": "765",
     "DSP48E": "0",
     "URAM": "0"
   }
