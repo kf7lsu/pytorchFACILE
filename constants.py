@@ -2,16 +2,16 @@ import os
 
 DEFAULT_SPLIT = (0.6, 0.3, 0.1)
 
-BATCH_SIZE = 500
-N_EPOCHS = 5
-LEARNING_RATE = 0.01
+BATCH_SIZE = 1
+N_EPOCHS = 20
+LEARNING_RATE = 0.001
 
 DATA_FOLDER_PATH = "data"
 MODELS_FOLDER_PATH = "models"
 BEST_LOSS_PATH = os.path.join(MODELS_FOLDER_PATH, "min_ave_val_loss_quant.txt")
 
-WEIGHT_BW = 4
-ACT_BW = 4
+WEIGHT_BW = 6
+ACT_BW = 6
 
 PREPROC_MINS =[
                 31.0,
@@ -48,19 +48,19 @@ PREPROC_MAXES = [
 POSTPROC_MIN = [0.0]
 POSTPROC_MAX = [507.4008]
 PREPROC_INCRS_4b = [
-                    5.4667,
-                    0.40,
-                    33.009,
-                    3.8667,
-                    4.7333,
-                    0.00083629,
-                    4353.9,
-                    3983.1,
-                    9595.7,
-                    41011.0,
-                    16989.0,
-                    5223.1,
-                    2602.7,
-                    2029.1
-                    ]
-POSTPROC_INCR_4b = [33.8267]
+                    1.3015873015873016,
+                    0.09523809523809523, 
+                    7.859190476190476, 
+                    0.9206349206349206, 
+                    1.126984126984127, 
+                    0.0001991239841269841, 
+                    1036.645513888889, 
+                    948.354380952381, 
+                    2284.6913968253966, 
+                    9764.599706349207, 
+                    4044.9026706349205, 
+                    1243.5876984126983, 
+                    619.6862555555555, 
+                    483.1174160317461
+                   ]
+POSTPROC_INCR_4b = [8.053980952380952]

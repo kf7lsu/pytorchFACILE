@@ -25,7 +25,7 @@ def train(model_class, metrics=None, batch_size=BATCH_SIZE, n_epochs=N_EPOCHS,
     train_set, val_set, test_set, n_features = utils.load_torch_datasets()
 
     gen_params = {
-                "batch_size": batch_size,
+                "batch_size": BATCH_SIZE,
                 "shuffle": True,
             }
 
