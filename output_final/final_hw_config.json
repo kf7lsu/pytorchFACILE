@@ -41,5 +41,11 @@
     "resType": "lut",
     "mem_mode": "decoupled",
     "runtime_writeable_weights": 0
+  },
+  "Thresholding_Batch_0": {
+    "PE": 1,
+    "ram_style": "distributed",
+    "mem_mode": "const",
+    "runtime_writeable_weights": 0
   }
 }

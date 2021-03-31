@@ -23,7 +23,7 @@ class QuantNet_opt(nn.Module):
         self.fc4 = QuantLinear(3, 1, bias=True, weight_bit_width=WEIGHT_BW)
         #self.bn4 = nn.BatchNorm1d(1, affine=False)
         self.relu4 = QuantReLU(bit_width=ACT_BW)
-        #self.qout = QuantIdentity(quant_type=QuantType.INT, bit_width=ACT_BW, min_val=0.0, max_val=15.0)
+        self.qout = QuantIdentity(quant_type=QuantType.INT, bit_width=ACT_BW, min_val=0.0, max_val=15.0)
 
     def forward(self, x):
         #x = self.bn0(x)
@@ -46,6 +46,6 @@ class QuantNet_opt(nn.Module):
         #x = self.bn4(x)
         #x = F.relu(self.fc4(x))
         x = self.relu4(x)
-        #x = self.qout(x)
+        x = self.qout(x)
         #x = torch.round(x)
         return x
