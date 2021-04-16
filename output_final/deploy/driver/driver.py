@@ -36,7 +36,7 @@ from driver_base import FINNExampleOverlay
 # dictionary describing the I/O of the FINN-generated accelerator
 io_shape_dict = {
     # FINN DataType for input and output tensors
-    "idt" : DataType.UINT6,
+    "idt" : DataType.INT6,
     "odt" : DataType.INT6,
     # shapes for input and output tensors (NHWC layout)
     "ishape_normal" : (1, 14),
