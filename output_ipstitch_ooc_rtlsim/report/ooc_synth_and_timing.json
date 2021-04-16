@@ -1,0 +1,11 @@
+{
+  "vivado_proj_folder": "/tmp/finn_dev_mtrahms/synth_out_of_context_dx2_bdo1/results_finn_design_wrapper",
+  "LUT": 343.0,
+  "FF": 423.0,
+  "DSP": 0.0,
+  "BRAM": 0.0,
+  "WNS": 196.981,
+  "": 0,
+  "fmax_mhz": 331.23550844650487,
+  "estimated_throughput_fps": 763215.4572500113
+}
